@@ -2,15 +2,35 @@ package ro.jademy.carrental.model;
 
 import java.time.LocalDate;
 
-public abstract class Car {
+public class Car {
 
     private String make;
     private String model;
     private String fuelType;
     private String carType;
     private String transmissionType;
+    private int carId;
+    private int nrOfSeats;
+    private int nrOfDoors;
+    private double pricePerDay;
     private boolean isRented;
     private LocalDate year;
+
+    public Car () { }
+
+    public Car (String make, String model, String fuelType, String carType, String transmissionType, int carId , int nrOfSeats, int nrOfDoors, double pricePerDay)
+    {
+        this.make = make;
+        this.model=model;
+        this.fuelType=fuelType;
+        this.carType=carType;
+        this.transmissionType=transmissionType;
+        this.carId=carId;
+        this.nrOfSeats=nrOfSeats;
+        this.nrOfDoors=nrOfDoors;
+        this.pricePerDay=pricePerDay;
+
+    }
 
     public String getMake() {
         return make;
@@ -52,6 +72,38 @@ public abstract class Car {
         this.transmissionType = transmissionType;
     }
 
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
+
+    public int getNrOfSeats() {
+        return nrOfSeats;
+    }
+
+    public void setNrOfSeats(int nrOfSeats) {
+        this.nrOfSeats = nrOfSeats;
+    }
+
+    public int getNrOfDoors() {
+        return nrOfDoors;
+    }
+
+    public void setNrOfDoors(int nrOfDoors) {
+        this.nrOfDoors = nrOfDoors;
+    }
+
+    public double getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(double pricePerDay) {
+        this.pricePerDay = pricePerDay;
+    }
+
     public boolean isRented() {
         return isRented;
     }
@@ -67,4 +119,6 @@ public abstract class Car {
     public void setYear(LocalDate year) {
         this.year = year;
     }
+
+
 }
