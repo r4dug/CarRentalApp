@@ -2,23 +2,22 @@ package ro.jademy.carrental.model;
 
 import java.time.LocalDate;
 
-public class Car {
+public abstract class Car {
 
     private String make;
     private String model;
     private String fuelType;
     private String carType;
     private String transmissionType;
-    private int carId;
+    private String carId;
     private int nrOfSeats;
     private int nrOfDoors;
     private double pricePerDay;
-    private boolean isRented;
     private LocalDate year;
 
     public Car () { }
 
-    public Car (String make, String model, String fuelType, String carType, String transmissionType, int carId , int nrOfSeats, int nrOfDoors, double pricePerDay)
+    public Car (String make, String model, String fuelType, String carType, String transmissionType, String carId , int nrOfSeats, int nrOfDoors, double pricePerDay)
     {
         this.make = make;
         this.model=model;
@@ -72,11 +71,11 @@ public class Car {
         this.transmissionType = transmissionType;
     }
 
-    public int getCarId() {
+    public String getCarId() {
         return carId;
     }
 
-    public void setCarId(int carId) {
+    public void setCarId(String carId) {
         this.carId = carId;
     }
 
@@ -103,15 +102,7 @@ public class Car {
     public void setPricePerDay(double pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
-
-    public boolean isRented() {
-        return isRented;
-    }
-
-    public void setRented(boolean rented) {
-        isRented = rented;
-    }
-
+    
     public LocalDate getYear() {
         return year;
     }
@@ -119,6 +110,5 @@ public class Car {
     public void setYear(LocalDate year) {
         this.year = year;
     }
-
 
 }

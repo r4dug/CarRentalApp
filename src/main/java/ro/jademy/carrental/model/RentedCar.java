@@ -5,6 +5,12 @@ import java.time.LocalDate;
 public class RentedCar {
 
 
+    private Car car;
+    private LocalDate pickUpDate;
+    private LocalDate returnDate;
+    private boolean isCurrentlyRented;
+
+
     public Car getCar() {
         return car;
     }
@@ -36,11 +42,5 @@ public class RentedCar {
     public void setCurrentlyRented(boolean currentlyRented) {
         isCurrentlyRented = currentlyRented;
     }
-
-    private Car car;
-    private LocalDate pickUpDate;
-    private LocalDate returnDate;
-    private boolean isCurrentlyRented;
-
 
 }
