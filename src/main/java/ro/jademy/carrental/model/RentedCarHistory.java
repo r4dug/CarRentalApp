@@ -2,14 +2,19 @@ package ro.jademy.carrental.model;
 
 import java.time.LocalDate;
 
-public class RentedCar extends Car{
-
+public class RentedCarHistory {
 
     private Car car;
     private LocalDate pickUpDate;
     private LocalDate returnDate;
     private boolean isCurrentlyRented;
 
+    public RentedCarHistory(Car car, LocalDate pickUpDate, LocalDate returnDate, boolean isCurrentlyRented) {
+        this.car = car;
+        this.pickUpDate = pickUpDate;
+        this.returnDate = returnDate;
+        this.isCurrentlyRented = isCurrentlyRented;
+    }
 
     public Car getCar() {
         return car;
@@ -42,5 +47,4 @@ public class RentedCar extends Car{
     public void setCurrentlyRented(boolean currentlyRented) {
         isCurrentlyRented = currentlyRented;
     }
-
 }

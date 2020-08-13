@@ -12,12 +12,13 @@ public abstract class Car {
     private String carId;
     private int nrOfSeats;
     private int nrOfDoors;
-    private double pricePerDay;
+    private int pricePerDay;
     private LocalDate year;
+    private boolean isRented;
 
     public Car () { }
 
-    public Car (String make, String model, String fuelType, String carType, String transmissionType, String carId , int nrOfSeats, int nrOfDoors, double pricePerDay)
+    public Car (String make, String model, String fuelType, String carType, String transmissionType, String carId , int nrOfSeats, int nrOfDoors, int pricePerDay)
     {
         this.make = make;
         this.model=model;
@@ -95,11 +96,11 @@ public abstract class Car {
         this.nrOfDoors = nrOfDoors;
     }
 
-    public double getPricePerDay() {
+    public int getPricePerDay() {
         return pricePerDay;
     }
 
-    public void setPricePerDay(double pricePerDay) {
+    public void setPricePerDay(int pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
     
@@ -111,4 +112,11 @@ public abstract class Car {
         this.year = year;
     }
 
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public void setRented(boolean rented) {
+        isRented = rented;
+    }
 }
