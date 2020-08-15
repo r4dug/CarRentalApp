@@ -15,7 +15,7 @@ public class DataSource {
     public static ArrayList<User> getUserList() {
 
         ArrayList<User> userList = new ArrayList<>();
-        userList.add(new User("user1", "1234"));
+        userList.add(new User("user1", "1234", "Ion", "Ionescu"));
 
         return userList;
     }

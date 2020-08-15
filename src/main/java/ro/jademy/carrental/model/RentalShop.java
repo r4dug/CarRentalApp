@@ -1,19 +1,24 @@
 package ro.jademy.carrental.model;
 
 import ro.jademy.carrental.data.DataSource;
+import ro.jademy.carrental.services.AuthService;
+import ro.jademy.carrental.services.MemoryAuthServiceImpl;
 import ro.jademy.carrental.services.PaymentService;
+
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class RentalShop implements PaymentService {
 
-    private ArrayList<User> userList = DataSource.getUserList();
-    private ArrayList<Car> carList = DataSource.getCarList();
+    private List<User> userList = DataSource.getUserList();
+    private List<Car> carList = DataSource.getCarList();
     private Scanner sc = new Scanner(System.in);
-    Car carState = new RentedCar();
+    private User currentUser;
+    private AuthService authService = new MemoryAuthServiceImpl();
 
     public void showMenu() {
 
@@ -80,27 +85,28 @@ public class RentalShop implements PaymentService {
     }
 
     public void login() {
-        boolean isLogin = false;
         do {
             System.out.println("Please enter your username and password");
             System.out.println("Username:");
             String username = sc.nextLine();
-            for (User users : userList ) {
-                if (username.equals(users.getUsername())) {
-                    System.out.println("Password:");
-                    String password = sc.nextLine();
-                    if (password.equals(users.getPassword())) {
-                        System.out.println("Successfully logged in.");
-                        isLogin = true;
-                    }
-                } else System.out.println("Wrong username or password , please try again.");
+            System.out.println("Password:");
+            String password = sc.nextLine();
+
+            currentUser = authService.login(userList, username, password);
+
+
+            if (currentUser == null) {
+                System.out.println("Incorrect Username/Password!");
             }
-        } while (!isLogin);
+
+        } while (currentUser == null);
+
+        System.out.println("Login successful! Welcome, " + currentUser.getFullName() + "!");
+        System.out.println();
     }
 
-
     private void listAllCars() {
-        for (int i=0; i < carList.size(); i++ ) {
+        for (int i = 0; i < carList.size(); i++) {
 
             System.out.println((i + 1) + ". [" + carList.get(i).getMake() + " " + carList.get(i).getModel() + "] | Type:" +
                     carList.get(i).getCarType() + " | Fuel:" + carList.get(i).getFuelType() + " | Transmission:" + carList.get(i).getTransmissionType() +
@@ -117,31 +123,31 @@ public class RentalShop implements PaymentService {
     }
 
 
-   private void listAvailableCars() {
+    private void listAvailableCars() {
 
-        for (int i=0; i < carList.size(); i++ ) {
+        for (int i = 0; i < carList.size(); i++) {
             if (!carList.get(i).isRented()) {
                 System.out.println((i + 1) + ". [" + carList.get(i).getMake() + " " + carList.get(i).getModel() + "] | Type:" +
                         carList.get(i).getCarType() + " | Fuel:" + carList.get(i).getFuelType() + " | Transmission:" + carList.get(i).getTransmissionType() +
                         " -> Price per day: " + carList.get(i).getPricePerDay());
             }
         }
-       System.out.println();
-       System.out.println("Select 1 to check all the cars we own.");
-       System.out.println("Select 3 to check already rented cars.");
-       System.out.println("Select 4 to rent a car.");
-       System.out.println("Select 5 to verify the amount to be paid.");
-       System.out.println("Select 6 to login with a different user.");
-       System.out.println("Select 7 to exit.");
-       menuOptions();
+        System.out.println();
+        System.out.println("Select 1 to check all the cars we own.");
+        System.out.println("Select 3 to check already rented cars.");
+        System.out.println("Select 4 to rent a car.");
+        System.out.println("Select 5 to verify the amount to be paid.");
+        System.out.println("Select 6 to login with a different user.");
+        System.out.println("Select 7 to exit.");
+        menuOptions();
 
     }
 
 
     private void listRentedCars() {
 
-        for (int i=0; i < carList.size(); i++ ) {
-            if (carList.get(i).isRented()==true) {
+        for (int i = 0; i < carList.size(); i++) {
+            if (carList.get(i).isRented() == true) {
                 System.out.println((i + 1) + ". [" + carList.get(i).getMake() + " " + carList.get(i).getModel() + "] | Type:" +
                         carList.get(i).getCarType() + " | Fuel:" + carList.get(i).getFuelType() + " | Transmission:" + carList.get(i).getTransmissionType() +
                         " -> Price per day: " + carList.get(i).getPricePerDay());
@@ -165,7 +171,7 @@ public class RentalShop implements PaymentService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
         System.out.println("Available cars:");
-        for (int i=0; i < carList.size(); i++ ) {
+        for (int i = 0; i < carList.size(); i++) {
             if (!carList.get(i).isRented()) {
                 System.out.println((i + 1) + ". [" + carList.get(i).getMake() + " " + carList.get(i).getModel() + "] | Type:" +
                         carList.get(i).getCarType() + " | Fuel:" + carList.get(i).getFuelType() + " | Transmission:" + carList.get(i).getTransmissionType() +
@@ -185,26 +191,26 @@ public class RentalShop implements PaymentService {
         int number = Integer.parseInt(carChoice);
 
 
-       for (int i=0; i <= carList.size(); i++ ) {
-           if (number == i) {
-               LocalDate start = LocalDate.parse(startDate, formatter);
-               LocalDate end = LocalDate.parse(endDate, formatter);
-               long differenceInDays = ChronoUnit.DAYS.between(start, end);
-               System.out.println("Congratulations! You have just rented the [" + carList.get(i - 1).getMake() + " " + carList.get(i - 1).getModel() + "] for the following period: " + start + "  " + end);
-               long carPrice = calculatePrice((int) differenceInDays, carList.get(i - 1));
-               System.out.println("Total price: " + carPrice);
+        for (int i = 0; i <= carList.size(); i++) {
+            if (number == i) {
+                LocalDate start = LocalDate.parse(startDate, formatter);
+                LocalDate end = LocalDate.parse(endDate, formatter);
+                long differenceInDays = ChronoUnit.DAYS.between(start, end);
+                System.out.println("Congratulations! You have just rented the [" + carList.get(i - 1).getMake() + " " + carList.get(i - 1).getModel() + "] for the following period: " + start + "  " + end);
+                long carPrice = calculatePrice((int) differenceInDays, carList.get(i - 1));
+                System.out.println("Total price: " + carPrice);
 
-               // now the rented car must be removed from the CAR_LIST and isRented state must be set to TRUE
-               //  user who rented this car must be logged in RentedCarHistory
-               carList.get(i-1).setRented(true);
-              // carList.remove(i-1);
+                // now the rented car must be removed from the CAR_LIST and isRented state must be set to TRUE
+                //  user who rented this car must be logged in RentedCarHistory
+                carList.get(i - 1).setRented(true);
+                // carList.remove(i-1);
 
-           }
-       }
+            }
+        }
         System.out.println();
         System.out.println("What would you want to do now?");
         menuOptions();
-        }
+    }
 
     public long calculatePrice(int numberOfDays, Car car) {
         int price = car.getPricePerDay() * numberOfDays;
