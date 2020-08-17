@@ -96,7 +96,7 @@ public class RentalShop implements PaymentService {
 
 
             if (currentUser == null) {
-                System.out.println("Incorrect Username/Password!");
+                System.out.println("Incorrect Username/Password! Please try again.");
             }
 
         } while (currentUser == null);
@@ -150,7 +150,7 @@ public class RentalShop implements PaymentService {
             if (carList.get(i).isRented() == true) {
                 System.out.println((i + 1) + ". [" + carList.get(i).getMake() + " " + carList.get(i).getModel() + "] | Type:" +
                         carList.get(i).getCarType() + " | Fuel:" + carList.get(i).getFuelType() + " | Transmission:" + carList.get(i).getTransmissionType() +
-                        " -> Price per day: " + carList.get(i).getPricePerDay());
+                        " | Rented period: " + carList.get(i).getFirstDayOfRental() + " - " + carList.get(i).getLastDayOfRental());
             }
         }
         System.out.println();
@@ -203,6 +203,8 @@ public class RentalShop implements PaymentService {
                 // now the rented car must be removed from the CAR_LIST and isRented state must be set to TRUE
                 //  user who rented this car must be logged in RentedCarHistory
                 carList.get(i - 1).setRented(true);
+                carList.get(i - 1).setFirstDayOfRental(start);
+                carList.get(i - 1).setLastDayOfRental(end);
                 // carList.remove(i-1);
 
             }

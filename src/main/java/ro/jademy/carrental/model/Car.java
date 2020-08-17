@@ -13,7 +13,8 @@ public abstract class Car {
     private int nrOfSeats;
     private int nrOfDoors;
     private int pricePerDay;
-    private LocalDate year;
+    private LocalDate firstDayOfRental;
+    private LocalDate lastDayOfRental;
     private boolean isRented;
 
     public Car () { }
@@ -103,13 +104,21 @@ public abstract class Car {
     public void setPricePerDay(int pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
-    
-    public LocalDate getYear() {
-        return year;
+
+    public LocalDate getFirstDayOfRental() {
+        return firstDayOfRental;
     }
 
-    public void setYear(LocalDate year) {
-        this.year = year;
+    public void setFirstDayOfRental(LocalDate firstDayOfRental) {
+        this.firstDayOfRental = firstDayOfRental;
+    }
+
+    public LocalDate getLastDayOfRental() {
+        return lastDayOfRental;
+    }
+
+    public void setLastDayOfRental(LocalDate lastDayOfRental) {
+        this.lastDayOfRental = lastDayOfRental;
     }
 
     public boolean isRented() {
