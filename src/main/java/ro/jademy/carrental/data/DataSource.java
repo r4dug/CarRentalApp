@@ -1,6 +1,7 @@
 package ro.jademy.carrental.data;
 
 import ro.jademy.carrental.model.Car;
+import ro.jademy.carrental.model.Customer;
 import ro.jademy.carrental.model.User;
 import ro.jademy.carrental.model.cars.*;
 
@@ -15,7 +16,9 @@ public class DataSource {
     public static ArrayList<User> getUserList() {
 
         ArrayList<User> userList = new ArrayList<>();
-        userList.add(new User("user1", "1234", "Ion", "Ionescu"));
+        userList.add(new Customer("ion", "1234", "Ion", "Ionescu", 28, 9));
+        userList.add(new Customer("popescu", "1234", "Popescu", "Popescovici", 43, 20));
+        userList.add(new Customer("maria", "1234", "Maria", "Marinescu", 21, 3));
 
         return userList;
     }

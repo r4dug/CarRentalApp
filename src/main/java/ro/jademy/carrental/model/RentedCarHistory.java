@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class RentedCarHistory {
 
+    private User user;
     private Car car;
     private LocalDate pickUpDate;
     private LocalDate returnDate;

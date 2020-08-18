@@ -3,13 +3,14 @@ package ro.jademy.carrental.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public abstract class User {
 
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private boolean isAdmin;
+    private long totalAmountToBePaid;
 
     public User(String username, String password, String firstName, String lastName) {
         this.username = username;
@@ -67,15 +68,11 @@ public class User {
         return firstName + " " + lastName;
     }
 
-    List<RentedCar> rentedCarHistory = new ArrayList<>();
+    public long getTotalAmountToBePaid() {
+        return totalAmountToBePaid;
+    }
 
-    public RentedCar getCurrentRentedCar() {
-        for (RentedCar rentedCarItem : rentedCarHistory ) {
-
-            if (rentedCarItem.isCurrentlyRented()) {
-                return rentedCarItem;
-            }
-        }
-        return null;
+    public void setTotalAmountToBePaid(long totalAmountToBePaid) {
+        this.totalAmountToBePaid = totalAmountToBePaid;
     }
 }

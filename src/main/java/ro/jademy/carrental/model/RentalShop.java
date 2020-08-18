@@ -25,7 +25,7 @@ public class RentalShop implements PaymentService {
         login();
 
         System.out.println(" -----------------------------------------------");
-        System.out.println("|    Welcome to Beanie Car Rental    |");
+        System.out.println("|    Welcome to RAGU Car Rental    |");
         System.out.println(" -----------------------------------------------");
         System.out.println();
         System.out.println("                    MAIN MENU                   ");
@@ -67,7 +67,24 @@ public class RentalShop implements PaymentService {
                 rentACar();
                 break;
             case "5":
-                totalAmountToBePaid();
+                System.out.println("Client "+currentUser.getFullName()+ " has to pay a total of "+currentUser.getTotalAmountToBePaid());
+                System.out.println();
+                System.out.println("Press P to go to Payment Details or anything else on the keyboard to continue browsing the application.");
+                String output = sc.nextLine();
+                if (output.equalsIgnoreCase("p")) {
+                    System.out.println("Payment details!");
+                }
+                else {
+                    System.out.println("                    MAIN MENU                   ");
+                    System.out.println("1. List all cars");
+                    System.out.println("2. List available cars");
+                    System.out.println("3. List rented cars");
+                    System.out.println("4. Rent a car");
+                    System.out.println("5. Total amount to be paid");
+                    System.out.println("6. Logout");
+                    System.out.println("7. Exit");
+                    menuOptions();
+                }
                 break;
             case "6":
                 System.out.println("Logged out.");
@@ -197,15 +214,22 @@ public class RentalShop implements PaymentService {
                 LocalDate end = LocalDate.parse(endDate, formatter);
                 long differenceInDays = ChronoUnit.DAYS.between(start, end);
                 System.out.println("Congratulations! You have just rented the [" + carList.get(i - 1).getMake() + " " + carList.get(i - 1).getModel() + "] for the following period: " + start + "  " + end);
+
+              // calculate the amount which has to be paid by the client for the chosen car
                 long carPrice = calculatePrice((int) differenceInDays, carList.get(i - 1));
                 System.out.println("Total price: " + carPrice);
 
-                // now the rented car must be removed from the CAR_LIST and isRented state must be set to TRUE
-                //  user who rented this car must be logged in RentedCarHistory
+                // now the rented car must be marked as "rented"
+                // assign to the rented car the pick up date and return date
                 carList.get(i - 1).setRented(true);
                 carList.get(i - 1).setFirstDayOfRental(start);
                 carList.get(i - 1).setLastDayOfRental(end);
-                // carList.remove(i-1);
+
+                //user who rented this car must be logged in RentedCarHistory
+
+                // if the client rents more than one car, the amount for the current one has to be stored
+                totalAmountToBePaid(currentUser,carPrice);
+
 
             }
         }
@@ -222,10 +246,11 @@ public class RentalShop implements PaymentService {
         return price;
     }
 
-    private void totalAmountToBePaid() {
+    private User totalAmountToBePaid(User currentUser, long carPrice) {
         // calculate the total amount that has to be paid if the user rents more cars in the same session
-        // save the amount in a list
-        // add the current one to the already saved one in order to get a total amount
+        currentUser.setTotalAmountToBePaid(currentUser.getTotalAmountToBePaid()+carPrice);
+
+        return currentUser;
     }
 
 
