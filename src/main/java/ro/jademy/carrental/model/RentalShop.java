@@ -1,9 +1,7 @@
 package ro.jademy.carrental.model;
 
 import ro.jademy.carrental.data.DataSource;
-import ro.jademy.carrental.services.AuthService;
-import ro.jademy.carrental.services.MemoryAuthServiceImpl;
-import ro.jademy.carrental.services.PaymentService;
+import ro.jademy.carrental.services.*;
 
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
@@ -19,6 +17,8 @@ public class RentalShop implements PaymentService {
     private Scanner sc = new Scanner(System.in);
     private User currentUser;
     private AuthService authService = new MemoryAuthServiceImpl();
+    private CarFilterService carFilterService = new CarFilterServiceImpl();
+    private RentingService rentingService = new RentingServiceImpl();
 
     public void showMenu() {
 
@@ -51,7 +51,7 @@ public class RentalShop implements PaymentService {
     }*/
 
     public void menuOptions() {
-        System.out.println("\nChoose an option\n");
+        System.out.println("\nChoose an option:      [Press S for Search]\n");
         String optionSelected = sc.nextLine();
         switch (optionSelected) {
             case "1":
@@ -94,9 +94,13 @@ public class RentalShop implements PaymentService {
                 System.exit(0);
                 break;
 
+            case "S":
+                carFilterSubMenu();
+                break;
+
             default:
                 System.out.println("Choose a correct option.");
-
+                menuOptions();
         }
 
     }
@@ -229,20 +233,15 @@ public class RentalShop implements PaymentService {
 
                 // if the client rents more than one car, the amount for the current one has to be stored
                 totalAmountToBePaid(currentUser,carPrice);
-
-
             }
         }
-        System.out.println();
-        System.out.println("What would you want to do now?");
+        printMainMenu();
         menuOptions();
     }
 
     public long calculatePrice(int numberOfDays, Car car) {
+        // calculate the price user has to pay for renting a car
         int price = car.getPricePerDay() * numberOfDays;
-/*        if (numberOfDays > 15) {
-            price = (long) (car.getPricePerDay() - (numberOfDays - 15) * 10);
-        }*/
         return price;
     }
 
@@ -253,6 +252,103 @@ public class RentalShop implements PaymentService {
         return currentUser;
     }
 
+
+    private void carFilterSubMenu() {
+
+        System.out.println();
+        System.out.println("Select 1 to search by make.");
+        System.out.println("Select 2 to search by model.");
+        System.out.println("Select 3 to search by fuel type.");
+        System.out.println("Select 4 to search by transmission type.");
+        System.out.println("Select 5 to search by price.");
+        System.out.println("\nChoose an option or press B to go back to the main menu\n");
+
+        String optionSelected = sc.nextLine();
+        switch (optionSelected) {
+            case "1":
+                // filter cars by MAKE
+                System.out.println("Please type the car make you are searching for.");
+                String make = sc.nextLine();
+                carFilterService.filterByMake(make);
+                System.out.println();
+                System.out.println("Select R to rent a car or B to go back to the main menu");
+                String userInput = sc.nextLine();
+                if (userInput.equalsIgnoreCase("r")) {
+                    // rent the desired car
+                  //  rentingService.rentCarAfterFiltering();
+
+                } else if (userInput.equalsIgnoreCase("b")) {
+                    printMainMenu();
+                    menuOptions();
+                } else {
+                System.out.println("Please select a valid input!"); }
+                break;
+            case "2":
+                // filter cars by MODEL
+                System.out.println("Please type the car model you are searching for.");
+                String model = sc.nextLine();
+                carFilterService.filterByModel(model);
+                System.out.println();
+                System.out.println("Select R to rent a car or B to go back to the main menu");
+               String userInput2 = sc.nextLine();
+                if (userInput2.equalsIgnoreCase("r")) {
+                    // rent the desired car
+
+                } else if (userInput2.equalsIgnoreCase("b")) {
+                    printMainMenu();
+                    menuOptions();
+                } else {
+                System.out.println("Please select a valid input!"); }
+                break;
+            case "3":
+                // filter cars by FUEL TYPE
+                System.out.println("Please enter the desired fuel type.");
+                String fuelType = sc.nextLine();
+                carFilterService.filterByFuelType(fuelType);
+                System.out.println();
+                System.out.println("Select R to rent a car or B to go back to the main menu");
+                String userInput3 = sc.nextLine();
+                if (userInput3.equalsIgnoreCase("r")) {
+                    // rent the desired car
+
+                } else if (userInput3.equalsIgnoreCase("b")) {
+                    printMainMenu();
+                    menuOptions();
+                } else {
+                System.out.println("Please select a valid input!"); }
+                break;
+            case "5":
+                // filter cars by PRICE
+                System.out.println("Please enter a range of prices.");
+                System.out.println();
+                System.out.println("Minimum price: ");
+                int minimumPrice = sc.nextInt();
+                System.out.println("Maximum price: ");
+                int maximumPrice = sc.nextInt();
+                carFilterService.filterByPrice(minimumPrice,maximumPrice);
+                System.out.println();
+                break;
+            case "B":
+               menuOptions();
+                break;
+            default:
+                System.out.println("Choose a correct option.");
+                carFilterSubMenu();
+
+        }
+
+    }
+
+    private void printMainMenu () {
+        System.out.println("                    MAIN MENU                   ");
+        System.out.println("1. List all cars");
+        System.out.println("2. List available cars");
+        System.out.println("3. List rented cars");
+        System.out.println("4. Rent a car");
+        System.out.println("5. Total amount to be paid");
+        System.out.println("6. Logout");
+        System.out.println("7. Exit");
+    }
 
     @Override
     public boolean validatePayment(PaymentDetails paymentDetails) {

@@ -34,7 +34,7 @@ public class DataSource {
         carList.add(new BMW("BMW", "3 Series", "Diesel", "Sedan", "Manual", "B113321", 5, 4, 70));
         carList.add(new BMW("BMW", "5 Series", "Diesel", "Sedan", "Automatic", "B991337", 5, 4, 90));
         carList.add(new BMW("BMW", "X4", "Diesel", "SUV", "Automatic", "B552002", 5, 4, 100));
-        carList.add(new Dacia("Dacia", "Spring", "Eletric", "Compact", "Automatic", "D777775", 4, 4, 65));
+        carList.add(new Dacia("Dacia", "Spring", "Electric", "Compact", "Automatic", "D777775", 4, 4, 65));
         carList.add(new Dacia("Dacia", "Sandero", "Petrol", "Compact", "Manual", "D777774", 4, 4, 30));
         carList.add(new Dacia("Dacia", "Duster", "Petrol", "SUV", "Manual", "D777773", 5, 4, 40));
         carList.add(new Fiat("Fiat", "500", "Petrol", "Compact", "Manual", "F522122", 4, 2, 35));
